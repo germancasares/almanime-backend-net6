@@ -1,20 +1,27 @@
 version: '3'
 
 services:
+  jobs:
+    build:
+      context: .
+      dockerfile: Jobs
+    volumes:
+      - ..:/workspace:cached
+    command: sleep infinity
+    network_mode: service:db
+
   app:
     build: 
       context: .
-      dockerfile: Dockerfile
+      dockerfile: API
       args:
         # Update 'VARIANT' to pick a version of .NET: 3.1, 5.0, 6.0
         # Append -bullseye or -focal to pin to an OS version.
         VARIANT: 6.0-bullseye
         # Optional version of Node.js
         NODE_VERSION: "none"
-
     volumes:
       - ..:/workspace:cached
-      
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
 
